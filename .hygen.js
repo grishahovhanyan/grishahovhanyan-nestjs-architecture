@@ -84,7 +84,7 @@ module.exports = {
 			)
 		},
 		EntityName(name) {
-			return this.pascalSingularize(name)
+			return `${this.pascalSingularize(name)}Entity`
 		},
 
 		entityFileName(name) {

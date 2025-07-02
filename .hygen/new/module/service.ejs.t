@@ -27,11 +27,9 @@ skip_if: <%= !resources.includes('Service') %>
   getDtoParamName = h.changeCase.camel(GetDtoName)
   updateDtoParamName = h.changeCase.camel(UpdateDtoName)
 
-%>import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+%>import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { NotFoundException, paginatedResponse, SUCCESS_RESPONSE } from '@app/common'
+import { paginatedResponse, SUCCESS_RESPONSE } from '@app/common'
 
 import { <%= CreateDtoName %>, <%= GetDtoName %>, <%= UpdateDtoName %> } from './<%= dtosFolderName %>'
 import { <%= EntityName %> } from './<%= entitiesFolderName %>/<%= entityFileName %>'
@@ -39,11 +37,7 @@ import { <%= RepositoryName %> } from './<%= repositoryFileName %>'
 
 @Injectable()
 export class <%= ServiceName %> {
-  constructor(
-    @InjectRepository(<%= EntityName %>)
-    private readonly repo: Repository< <%= EntityName %> >,
-    private readonly <%= repositoryParamName %>: <%= RepositoryName %>
-  ) {}
+  constructor(private readonly <%= repositoryParamName %>: <%= RepositoryName %>) {}
 
   // ******* Controller Handlers *******
   async index(currentUserId: number, query: <%= GetDtoName %>) {
@@ -82,9 +76,7 @@ export class <%= ServiceName %> {
       return <%= instanceName %>
     }
 
-    const updated<%= instanceNamePascal %> = await this.updateById(<%= instanceId %>, <%= updateDtoParamName %>)
-
-    return updated<%= instanceNamePascal %>
+    return this.updateById(<%= instanceId %>, <%= updateDtoParamName %>)
   }
 
   async delete(currentUserId: number, <%= instanceId %>: number) {
@@ -102,13 +94,13 @@ export class <%= ServiceName %> {
   // ******* ******* ******* *******
 
   async create<%= instanceNamePascal %>(<%= createDtoParamName %>: <%= CreateDtoName %>): Promise< <%= EntityName %> > {
-    return await this.<%= repositoryParamName %>.create(<%= createDtoParamName %>)
+    return this.<%= repositoryParamName %>.createAndSave(<%= createDtoParamName %>)
   }
 
   async getAndCount(<%= getDtoParamName %>: <%= GetDtoName %>) {
     const { page, perPage, order, searchText, userId } = <%= getDtoParamName %>
 
-    const qb = this.repo.createQueryBuilder('<%= instanceName %>')
+    const qb = this.<%= repositoryParamName %>.createQueryBuilder('<%= instanceName %>')
 
     if (searchText) {
       console.log('Search text:', searchText)
@@ -131,7 +123,7 @@ export class <%= ServiceName %> {
   }
 
   async getById(<%= instanceId %>: number): Promise< <%= EntityName %>  | null> {
-    return await this.<%= repositoryParamName %>.findOne({ id: <%= instanceId %> })
+    return this.<%= repositoryParamName %>.findOne({ where: { id: <%= instanceId %> } })
   }
 
   async updateById(<%= instanceId %>: number, <%= updateDtoParamName %>: <%= UpdateDtoName %>): Promise< <%= EntityName %>  | null> {
@@ -140,6 +132,6 @@ export class <%= ServiceName %> {
   }
 
   async deleteById(<%= instanceId %>: number) {
-    await this.<%= repositoryParamName %>.delete({ id: <%= instanceId %> })
+    return this.<%= repositoryParamName %>.delete({ id: <%= instanceId %> })
   }
 }

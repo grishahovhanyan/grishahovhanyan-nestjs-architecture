@@ -10,9 +10,7 @@ skip_if: <%= !resources.includes('Entity') %>
 
 %>import { Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-import { DbTables } from '@app/database'
-
-@Entity(DbTables.<%= TableName  %>)
+@Entity('<%= TableName  %>')
 export class <%= EntityName  %> {
   @PrimaryGeneratedColumn()
   id: number
