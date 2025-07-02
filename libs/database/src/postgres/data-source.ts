@@ -3,8 +3,12 @@ import { DataSource } from 'typeorm'
 import 'tsconfig-paths/register'
 import 'dotenv/config'
 
+const SEED_MODE = process.env.SEED_MODE === 'true'
+
+const migrationsOrSeedersFolderName = SEED_MODE ? 'seeders' : 'migrations'
+
 const entities = [path.join(process.cwd(), 'src', 'modules/**/entities/*.entity{.ts,.js}')]
-const migrations = [path.join(__dirname, 'migrations', '*{.ts,.js}')]
+const migrations = [path.join(__dirname, migrationsOrSeedersFolderName, '*{.ts,.js}')]
 
 export default new DataSource({
   type: 'postgres',

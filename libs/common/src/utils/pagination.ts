@@ -1,5 +1,4 @@
-import { getSortOrderFromQuery } from '@app/common'
-import { IOrderObject } from '@app/database'
+import { getSortOrderFromQuery, OrderObject } from '@app/common'
 
 import { envService } from './get-env'
 
@@ -41,7 +40,7 @@ export function getPaginationAndSortOrder(
   query: { page?: number; perPage?: number; ordering?: string },
   pageSizeType: string,
   allowedSortFields: string[] = []
-): { page: number; perPage: number; order: IOrderObject } {
+): { page: number; perPage: number; order: OrderObject } {
   const page = +query.page || 1
   const perPage = getPerPage(pageSizeType, +query.perPage)
   const order = getSortOrderFromQuery(query.ordering?.split(',') ?? [], allowedSortFields)

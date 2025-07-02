@@ -7,10 +7,8 @@ in the `src/modules/MODULE_NAME/entities` folder for better organization.
 */
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-import { DbTables } from '../db.enum'
-
-@Entity(DbTables.baskets)
-export class Basket {
+@Entity('baskets')
+export class BasketEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -19,9 +17,9 @@ export class Basket {
 
   /*
   ####### NOTE #######
-  OneToOne relationship between the current entity and the User entity
+  OneToOne relationship between the current entity and the UserEntity
   */
-  // @OneToOne(() => User, (user) => user.basket)
+  // @OneToOne(() => UserEntity, (user) => user.basket)
   // @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  // user: User
+  // user: UserEntity
 }

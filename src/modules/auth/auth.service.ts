@@ -9,7 +9,7 @@ import {
   RESET_PASSWORD_TOKEN_EXPIRE_TIME,
   SUCCESS_RESPONSE
 } from '@app/common'
-import { User } from '@modules/users/entities/user.entity'
+import { UserEntity } from '@modules/users/entities/user.entity'
 import { UsersService } from '@modules/users/users.service'
 import { NotificationQueueService } from '@infra/queues'
 import { MailQueueService } from '@infra/queues/mail'
@@ -97,7 +97,7 @@ export class AuthService {
 
   // ******* ******* ******* *******
 
-  async validateUser(email: string, pass: string): Promise<User> {
+  async validateUser(email: string, pass: string): Promise<UserEntity> {
     const user = await this.usersService.getByEmail(email)
     if (!user || !HashService.compare(pass, user.password)) {
       throw new BadRequestException(ERROR_MESSAGES.invalidEmailPassword)

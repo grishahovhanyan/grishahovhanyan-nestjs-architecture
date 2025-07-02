@@ -2,10 +2,9 @@ import { Exclude, Expose } from 'class-transformer'
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 import { calculateAge, PasswordTransformer } from '@app/common'
-import { DbTables } from '@app/database'
 
-@Entity(DbTables.users)
-export class User {
+@Entity('users')
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number
 

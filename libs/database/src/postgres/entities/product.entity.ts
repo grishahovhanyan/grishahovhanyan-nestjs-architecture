@@ -7,10 +7,8 @@ in the `src/modules/MODULE_NAME/entities` folder for better organization.
 */
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-import { DbTables } from '../db.enum'
-
-@Entity(DbTables.products)
-export class Product {
+@Entity('products')
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -34,9 +32,9 @@ export class Product {
 
   /*
   ####### NOTE #######
-  ManyToOne relationship between the current entity and the User entity
+  ManyToOne relationship between the current entity and the UserEntity
   */
-  // @ManyToOne(() => User, (user) => user.products, { onDelete: 'CASCADE' })
+  // @ManyToOne(() => UserEntity, (user) => user.products, { onDelete: 'CASCADE' })
   // @JoinColumn({ name: 'createdBy' })
-  // creator: User
+  // creator: UserEntity
 }
