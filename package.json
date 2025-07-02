@@ -1,6 +1,6 @@
 {
   "name": "nestjs-architecture",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Nestjs Architecture",
   "author": "Grisha Hovhanyan",
   "scripts": {
@@ -19,7 +19,9 @@
     "migrations:create": "npx typeorm-ts-node-commonjs migration:create ./libs/database/src/postgres/migrations/$npm_config_name",
     "migrations:generate": "npm run typeorm -- migration:generate ./libs/database/src/postgres/migrations/$npm_config_name",
     "migrations:run": "npm run typeorm -- migration:run",
-    "migrations:rollback": "npm run typeorm -- migration:revert"
+    "migrations:rollback": "npm run typeorm -- migration:revert",
+    "seed:create": "npx typeorm-ts-node-commonjs migration:create ./libs/database/src/postgres/seeders/$npm_config_name",
+    "seed:run": "cross-env SEED_MODE=true npm run typeorm -- migration:run"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.744.0",
@@ -74,6 +76,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
